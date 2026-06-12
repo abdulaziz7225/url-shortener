@@ -12,11 +12,15 @@ help: ## Show this help
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
 
+PROTOC_GEN_GO_VERSION      ?= v1.36.11
+PROTOC_GEN_GO_GRPC_VERSION ?= v1.6.2
+GOLANGCI_LINT_VERSION      ?= v2.12.2
+
 .PHONY: tools
 tools: ## Install build tooling (protoc plugins, golangci-lint)
-	$(GO) install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	$(GO) install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-	$(GO) install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+	$(GO) install google.golang.org/protobuf/cmd/protoc-gen-go@$(PROTOC_GEN_GO_VERSION)
+	$(GO) install google.golang.org/grpc/cmd/protoc-gen-go-grpc@$(PROTOC_GEN_GO_GRPC_VERSION)
+	$(GO) install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@$(GOLANGCI_LINT_VERSION)
 
 .PHONY: proto
 proto: ## Generate Go stubs from .proto files into libs/gen
