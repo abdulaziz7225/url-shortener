@@ -1,0 +1,68 @@
+{
+  "info": {
+    "name": "URL Shortener",
+    "description": "REST API for the URL shortener. Set the baseUrl variable to your gateway (default http://localhost:8080).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "code", "value": "promo" }
+  ],
+  "item": [
+    {
+      "name": "Create short URL",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/v1/urls", "host": ["{{baseUrl}}"], "path": ["api", "v1", "urls"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"long_url\": \"https://example.com/some/very/long/path\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create short URL with custom alias",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/v1/urls", "host": ["{{baseUrl}}"], "path": ["api", "v1", "urls"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"long_url\": \"https://example.com/path\",\n  \"custom_alias\": \"promo\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create short URL with expiry",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{baseUrl}}/api/v1/urls", "host": ["{{baseUrl}}"], "path": ["api", "v1", "urls"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"long_url\": \"https://example.com/path\",\n  \"expires_at\": \"2030-01-01T00:00:00Z\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get metadata",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/urls/{{code}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "urls", "{{code}}"]
+        }
+      }
+    },
+    {
+      "name": "Redirect",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/{{code}}", "host": ["{{baseUrl}}"], "path": ["{{code}}"] }
+      },
+      "description": "Returns 302 with a Location header. Disable 'Automatically follow redirects' in Postman settings to inspect it."
+    }
+  ]
+}
