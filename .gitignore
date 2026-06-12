@@ -3,6 +3,7 @@ CLAUDE.md
 .claude/
 .vscode/
 build-url-shortener.md
+spec-kit/
 
 # Build output
 /bin/
