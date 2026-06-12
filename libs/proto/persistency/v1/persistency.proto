@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package persistency.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/amusaev/url-shortener/libs/gen/persistency/v1;persistencyv1";
+
+// PersistencyService is the sole owner of durable storage (Postgres) and the
+// cache-aside layer (Redis). No other service touches the database or cache.
+service PersistencyService {
+  rpc CreateMapping(CreateMappingRequest) returns (CreateMappingResponse);
+  rpc GetMapping(GetMappingRequest) returns (GetMappingResponse);
+}
+
+message Mapping {
+  string code = 1;
+  string long_url = 2;
+  google.protobuf.Timestamp expires_at = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+message CreateMappingRequest {
+  string code = 1;
+  string long_url = 2;
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+message CreateMappingResponse {
+  Mapping mapping = 1;
+}
+
+message GetMappingRequest {
+  string code = 1;
+}
+
+message GetMappingResponse {
+  Mapping mapping = 1;
+}

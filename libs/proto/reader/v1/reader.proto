@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package reader.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/amusaev/url-shortener/libs/gen/reader/v1;readerv1";
+
+// ReaderService resolves short codes on the hot path.
+service ReaderService {
+  rpc Resolve(ResolveRequest) returns (ResolveResponse);
+}
+
+message ResolveRequest {
+  string code = 1;
+}
+
+message ResolveResponse {
+  string long_url = 1;
+  google.protobuf.Timestamp expires_at = 2;
+}

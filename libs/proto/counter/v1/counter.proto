@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package counter.v1;
+
+option go_package = "github.com/amusaev/url-shortener/libs/gen/counter/v1;counterv1";
+
+// CounterService hands out disjoint, monotonically increasing ranges so that
+// horizontally scaled writers never generate colliding short codes.
+service CounterService {
+  rpc AllocateRange(AllocateRangeRequest) returns (AllocateRangeResponse);
+}
+
+message AllocateRangeRequest {
+  uint64 batch_size = 1;
+}
+
+// The allocated range is inclusive on both ends: [start, end].
+message AllocateRangeResponse {
+  uint64 start = 1;
+  uint64 end = 2;
+}

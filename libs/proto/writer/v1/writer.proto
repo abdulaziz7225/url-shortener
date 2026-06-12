@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package writer.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/amusaev/url-shortener/libs/gen/writer/v1;writerv1";
+
+// WriterService creates short-code mappings.
+service WriterService {
+  rpc Shorten(ShortenRequest) returns (ShortenResponse);
+}
+
+message ShortenRequest {
+  string long_url = 1;
+  optional string custom_alias = 2;
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+message ShortenResponse {
+  string code = 1;
+  string short_url = 2;
+  string long_url = 3;
+  google.protobuf.Timestamp expires_at = 4;
+}
