@@ -38,7 +38,7 @@ func Dial(target, service string, cfg ClientConfig) (*grpc.ClientConn, error) {
 	}
 	breaker := resilience.NewBreaker(service + " -> " + target)
 
-	return grpc.NewClient(target,
+	conn, err := grpc.NewClient(target,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
 		grpc.WithChainUnaryInterceptor(
@@ -48,6 +48,13 @@ func Dial(target, service string, cfg ClientConfig) (*grpc.ClientConn, error) {
 			retryUnaryClientInterceptor(cfg),
 		),
 	)
+	if err != nil {
+		return nil, err
+	}
+	// Connect eagerly so the first real request does not pay connection setup
+	// inside its deadline.
+	conn.Connect()
+	return conn, nil
 }
 
 func timeoutUnaryClientInterceptor(d time.Duration) grpc.UnaryClientInterceptor {

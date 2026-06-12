@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: api-gateway
+    static_configs:
+      - targets: ["api-gateway:8081"]
+
+  - job_name: counter
+    static_configs:
+      - targets: ["counter:9091"]
+
+  - job_name: persistency-controller
+    static_configs:
+      - targets: ["persistency-controller:9091"]
+
+  - job_name: writer
+    static_configs:
+      - targets: ["writer:9091"]
+
+  - job_name: reader
+    static_configs:
+      - targets: ["reader:9091"]
